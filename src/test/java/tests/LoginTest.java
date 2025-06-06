@@ -1,14 +1,15 @@
 package tests;
 
 import base.BaseTest;
+import base.TestDataProvider;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.LoginPage;
 
 public class LoginTest extends BaseTest {
 
-    @Test(description = "Verify successful login with valid credentials")
-    public void testValidLogin() {
+    @Test(dataProvider = "browsers", dataProviderClass = TestDataProvider.class, description = "Verify successful login with valid credentials")
+    public void testValidLogin(String browserType) {
         LoginPage loginPage = new LoginPage(page);
 
         // Valid credentials for SauceDemo
@@ -19,8 +20,8 @@ public class LoginTest extends BaseTest {
                 "Products page should be displayed after successful login");
     }
 
-    @Test(description = "Verify login fails with invalid credentials")
-    public void testInvalidLogin() {
+    @Test(dataProvider = "browsers", dataProviderClass = TestDataProvider.class, description = "Verify login fails with invalid credentials")
+    public void testInvalidLogin(String browserType) {
         LoginPage loginPage = new LoginPage(page);
 
         // Invalid credentials
@@ -36,8 +37,8 @@ public class LoginTest extends BaseTest {
                 "Error message should contain 'Epic sadface'");
     }
 
-    @Test(description = "Verify login fails with empty credentials")
-    public void testEmptyCredentials() {
+    @Test(dataProvider = "browsers", dataProviderClass = TestDataProvider.class, description = "Verify login fails with empty credentials")
+    public void testEmptyCredentials(String browserType) {
         LoginPage loginPage = new LoginPage(page);
 
         // Empty credentials
