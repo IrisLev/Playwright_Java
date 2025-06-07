@@ -5,9 +5,12 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
+import org.testng.ITestResult;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 public abstract class BaseTest {
@@ -61,7 +64,14 @@ public abstract class BaseTest {
 
 
     @AfterMethod
-    public void tearDown() {
+    public void tearDown(ITestResult result) {
+        if (result.getStatus() == ITestResult.FAILURE) {
+            String testName = result.getMethod().getMethodName();
+            Path screenshot = Paths.get("screenshots", testName + ".png");
+            page.screenshot(new Page.ScreenshotOptions()
+                    .setPath(screenshot)
+                    .setFullPage(true));
+        }
         if (page != null) {
             page.close();
         }
