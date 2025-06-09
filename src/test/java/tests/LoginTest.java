@@ -52,4 +52,21 @@ public class LoginTest extends BaseTest {
         Assert.assertTrue(errorMessage.contains("Username is required"),
                 "Error message should indicate username is required");
     }
+
+    @Test(description = "Verify login fails with locked out user")
+    public void testLockedOutUser() {
+        LoginPage loginPage = new LoginPage(page);
+
+        // Locked out user credentials
+        loginPage.login("locked_out_user", "secret_sauce");
+
+        // Verify error message is displayed
+        Assert.assertTrue(loginPage.isErrorMessageDisplayed(),
+                "Error message should be displayed for locked out user");
+
+        // Verify specific error message for locked out user
+        String errorMessage = loginPage.getErrorMessage();
+        Assert.assertTrue(errorMessage.contains("Epic sadface: Sorry, this user has been locked out."),
+                "Error message should indicate user is locked out");
+    }
 }
