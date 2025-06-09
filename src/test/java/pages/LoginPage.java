@@ -2,6 +2,7 @@ package pages;
 
 import base.BasePage;
 import com.microsoft.playwright.Page;
+//import com.microsoft.playwright.options.WaitForSelectorOptions;
 
 public class LoginPage extends BasePage {
 
@@ -45,5 +46,27 @@ public class LoginPage extends BasePage {
     public boolean isProductsPageDisplayed() {
         return isVisible(PRODUCTS_TITLE) &&
                 getText(PRODUCTS_TITLE).equals("Products");
+    }
+
+    public boolean isErrorMessageDisplayedWithTimeout(int timeoutMs) {
+        try {
+            page.waitForSelector(ERROR_MESSAGE, new Page.WaitForSelectorOptions()
+                    .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE)
+                    .setTimeout(timeoutMs));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean isProductsPageDisplayedWithTimeout(int timeoutMs) {
+        try {
+            page.waitForSelector(PRODUCTS_TITLE, new Page.WaitForSelectorOptions()
+                    .setState(com.microsoft.playwright.options.WaitForSelectorState.VISIBLE)
+                    .setTimeout(timeoutMs));
+            return isVisible(PRODUCTS_TITLE) && getText(PRODUCTS_TITLE).equals("Products");
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
