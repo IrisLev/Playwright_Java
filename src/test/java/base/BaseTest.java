@@ -29,7 +29,12 @@ public abstract class BaseTest {
         browser = getBrowser().launch(new BrowserType.LaunchOptions()
                 .setHeadless(Boolean.parseBoolean(config.getProperty("headless", "false")))
                 .setSlowMo(Integer.parseInt(config.getProperty("slowMo", "0"))));
-        context = browser.newContext();
+        
+        // Create isolated context for parallel execution
+        context = browser.newContext(new Browser.NewContextOptions()
+                .setViewportSize(1920, 1080)
+                .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"));
+        
         page = context.newPage();
         page.navigate(config.getProperty("baseUrl", "https://www.saucedemo.com"));
     }
